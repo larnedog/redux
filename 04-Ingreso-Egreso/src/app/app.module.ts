@@ -11,40 +11,18 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 
 import { environment } from 'src/environments/environment';
 
-import { NgChartsModule } from 'ng2-charts';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { IngresoEgresoComponent } from './ingreso-egreso/ingreso-egreso.component';
-import { EstadisticasComponent } from './ingreso-egreso/estadisticas/estadisticas.component';
-import { DetalleComponent } from './ingreso-egreso/detalle/detalle.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
-import { SidebarComponent } from './shared/sidebar/sidebar.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { OrdenIngresoPipe } from './pipes/orden-ingreso.pipe';
+
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    DashboardComponent,
-    IngresoEgresoComponent,
-    EstadisticasComponent,
-    DetalleComponent,
-    FooterComponent,
-    NavbarComponent,
-    SidebarComponent,
-    OrdenIngresoPipe
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp( environment.firebase )),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
@@ -53,7 +31,7 @@ import { OrdenIngresoPipe } from './pipes/orden-ingreso.pipe';
       maxAge: 25,
       logOnly: environment.production
     }),
-    NgChartsModule
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]
