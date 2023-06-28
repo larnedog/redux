@@ -7,6 +7,7 @@ import { CollectionReference, addDoc } from '@firebase/firestore';
 import { AppState } from '../app.reducer';
 import { Store } from '@ngrx/store'
 import * as auth from '../auth/auth.actions'
+import * as ingresoEgresoActions from '../ingreso-egreso/ingreso-egreso.actions'
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,11 @@ export class AuthService {
   private firestore: Firestore = inject(Firestore)
   usersCollection!: CollectionReference;
   userSubscription!: Subscription
+  private _usuario!: Usuario | null
+
+  get user() {
+    return {... this._usuario}
+  }
 
   constructor (private store: Store<AppState>) {
   }
@@ -28,11 +34,14 @@ export class AuthService {
         const user = doc(this.firestore, `${fuser.uid}/user`)
         this.userSubscription = docData(user).subscribe( user => {
                                   const usuario = user as Usuario
+                                  this._usuario = usuario
                                   this.store.dispatch(auth.setUser({ user: usuario}))
                                 })
       } else {
+        this._usuario = null
         this.userSubscription.unsubscribe()
         this.store.dispatch(auth.unSetUser())
+        this.store.dispatch( ingresoEgresoActions.unsetItems() )
       }
     })
   }
